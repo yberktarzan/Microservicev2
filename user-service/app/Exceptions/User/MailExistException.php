@@ -9,7 +9,7 @@ class MailExistException extends BaseException
     /**
      * MailExistException constructor.
      */
-    public function __construct(int $email)
+    public function __construct(string $email)
     {
         parent::__construct(
             message: 'Email already exists',
