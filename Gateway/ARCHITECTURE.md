@@ -7,38 +7,43 @@ Enterprise-grade **API Gateway** with .NET 10, implementing industry best practi
 ## 🏗️ Architecture Components
 
 ### 1. **Reverse Proxy Layer** (YARP)
+
 - Dynamic route configuration
 - Path-based routing to downstream services
 - Load balancing capabilities
 - Header transformation
 
 ### 2. **Resilience Patterns**
+
 - Circuit Breaker (Polly)
 - Retry policies with exponential backoff
 - Timeout handling
 - Bulkhead isolation
 
 ### 3. **Security Layer**
+
 - JWT Bearer authentication
 - Security headers (OWASP)
 - CORS policy management
 - Rate limiting (DDoS protection)
 
 ### 4. **Observability**
+
 - Structured logging (Serilog)
 - Correlation ID tracking
 - Prometheus metrics
 - Health checks (liveness/readiness)
 
 ### 5. **Middleware Pipeline**
+
 ```
-Request → ExceptionHandling 
-       → SecurityHeaders 
-       → CorrelationId 
-       → RequestLogging 
-       → Authentication 
-       → RateLimiting 
-       → YARP Proxy 
+Request → ExceptionHandling
+       → SecurityHeaders
+       → CorrelationId
+       → RequestLogging
+       → Authentication
+       → RateLimiting
+       → YARP Proxy
        → Response
 ```
 
@@ -77,6 +82,7 @@ Gateway/
 ## 🔑 Key Features Implemented
 
 ### ✅ Production-Ready Features
+
 - [x] YARP Reverse Proxy
 - [x] JWT Authentication
 - [x] Rate Limiting (100 req/min)
@@ -93,6 +99,7 @@ Gateway/
 - [x] Docker Support
 
 ### 🎨 Architecture Patterns
+
 - Clean Architecture (separation of concerns)
 - Middleware Pattern
 - Repository Pattern (config models)
@@ -102,6 +109,7 @@ Gateway/
 ## 🚀 Quick Start
 
 ### Run Locally
+
 ```bash
 cd Gateway
 dotnet restore
@@ -111,39 +119,44 @@ dotnet run
 Gateway will start at: `http://localhost:5000`
 
 ### Run with Docker
+
 ```bash
 docker-compose up -d
 ```
 
 ### Test
+
 ```bash
 ./test-gateway.sh
 ```
 
 ## 📊 Endpoints
 
-| Endpoint | Purpose | Auth Required |
-|----------|---------|---------------|
-| `/` | Gateway info | No |
-| `/health` | Full health check | No |
-| `/health/ready` | Readiness probe | No |
-| `/health/live` | Liveness probe | No |
-| `/metrics` | Prometheus metrics | No |
-| `/swagger` | API documentation | No |
-| `/api/users/**` | User service proxy | Yes |
-| `/api/orders/**` | Order service proxy | Yes |
-| `/api/products/**` | Product service proxy | No |
-| `/api/auth/**` | Auth service proxy | No |
+| Endpoint           | Purpose               | Auth Required |
+| ------------------ | --------------------- | ------------- |
+| `/`                | Gateway info          | No            |
+| `/health`          | Full health check     | No            |
+| `/health/ready`    | Readiness probe       | No            |
+| `/health/live`     | Liveness probe        | No            |
+| `/metrics`         | Prometheus metrics    | No            |
+| `/swagger`         | API documentation     | No            |
+| `/api/users/**`    | User service proxy    | Yes           |
+| `/api/orders/**`   | Order service proxy   | Yes           |
+| `/api/products/**` | Product service proxy | No            |
+| `/api/auth/**`     | Auth service proxy    | No            |
 
 ## 🔧 Configuration
 
 ### Routing Configuration
+
 Routes are defined in `appsettings.json` under `ReverseProxy` section:
+
 - Path-based routing
 - Cluster definitions with health checks
 - Automatic failover
 
 ### Security Configuration
+
 - JWT secret key (change in production!)
 - CORS allowed origins
 - Rate limiting thresholds
@@ -152,11 +165,13 @@ Routes are defined in `appsettings.json` under `ReverseProxy` section:
 ## 📈 Scalability
 
 ### Horizontal Scaling
+
 - Stateless design (can run multiple instances)
 - No in-memory state
 - Distributed logging with correlation IDs
 
 ### Performance
+
 - Async/await throughout
 - Efficient middleware pipeline
 - Minimal memory footprint
@@ -175,7 +190,9 @@ Routes are defined in `appsettings.json` under `ReverseProxy` section:
 ## 🧪 Testing Strategy
 
 ### Manual Testing
+
 Use `test-gateway.sh` script to validate:
+
 - Health endpoints
 - CORS headers
 - Rate limiting
@@ -183,6 +200,7 @@ Use `test-gateway.sh` script to validate:
 - Correlation IDs
 
 ### Load Testing
+
 ```bash
 # Apache Bench
 ab -n 1000 -c 10 http://localhost:5000/
@@ -194,11 +212,13 @@ wrk -t4 -c100 -d30s http://localhost:5000/
 ## 🐳 Docker Deployment
 
 ### Build
+
 ```bash
 docker build -t gateway-api:1.0 .
 ```
 
 ### Run
+
 ```bash
 docker run -d \
   --name gateway \
@@ -208,6 +228,7 @@ docker run -d \
 ```
 
 ### Multi-service with Docker Compose
+
 ```bash
 docker-compose up -d
 ```
@@ -215,11 +236,13 @@ docker-compose up -d
 ## 📊 Monitoring & Observability
 
 ### Logs
+
 - Format: JSON structured logging
 - Location: `logs/gateway-{Date}.log`
 - Correlation: X-Correlation-ID header
 
 ### Metrics
+
 - Endpoint: `/metrics`
 - Format: Prometheus
 - Metrics:
@@ -229,6 +252,7 @@ docker-compose up -d
   - Circuit breaker state
 
 ### Health Checks
+
 - Self health: Always healthy
 - Downstream health: Configurable
 - Kubernetes ready: `/health/ready`
@@ -237,6 +261,7 @@ docker-compose up -d
 ## 🔄 Adding New Microservice
 
 1. Add route in `appsettings.json`:
+
 ```json
 {
   "ReverseProxy": {
@@ -267,6 +292,7 @@ docker-compose up -d
 ## 🎯 Next Steps
 
 ### Phase 2 Enhancements
+
 - [ ] Redis for distributed rate limiting
 - [ ] API versioning support
 - [ ] GraphQL gateway
@@ -280,6 +306,7 @@ docker-compose up -d
 - [ ] OAuth2/OIDC integration
 
 ### Infrastructure
+
 - [ ] Kubernetes manifests
 - [ ] Helm chart
 - [ ] CI/CD pipeline
@@ -296,22 +323,26 @@ docker-compose up -d
 ## 💡 Design Decisions
 
 ### Why YARP?
+
 - Native .NET integration
 - High performance
 - Dynamic configuration
 - Microsoft-backed
 
 ### Why Serilog?
+
 - Structured logging
 - Multiple sinks support
 - Rich ecosystem
 
 ### Why Prometheus?
+
 - Industry standard
 - Kubernetes native
 - Powerful query language
 
 ### Why JWT?
+
 - Stateless authentication
 - Standard format
 - Easy validation
@@ -328,17 +359,20 @@ docker-compose up -d
 ## 👨‍💻 Development Guidelines
 
 ### Code Style
+
 - Use async/await
 - Follow SOLID principles
 - Dependency injection
 - Separation of concerns
 
 ### Configuration
+
 - Externalize all settings
 - Environment-specific configs
 - Secret management
 
 ### Error Handling
+
 - Global exception handler
 - Structured error responses
 - Correlation IDs for tracking
@@ -346,6 +380,7 @@ docker-compose up -d
 ## 📞 Support
 
 For issues or questions:
+
 1. Check README.md
 2. Review code comments
 3. Check Swagger docs

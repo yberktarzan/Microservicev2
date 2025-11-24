@@ -8919,3 +8919,77 @@ System.Net.Http.HttpRequestException: Connection refused (localhost:5004)
    at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
    at Yarp.ReverseProxy.Health.ActiveHealthCheckMonitor.ProbeDestinationAsync(ClusterState cluster, DestinationState destination, TimeSpan timeout)
 2025-11-24 15:35:17.993 +03:00 [DBG] Active health check probing on cluster `auth-service-cluster` has stopped.
+2025-11-24 15:35:47.993 +03:00 [DBG] Starting active health check probing on cluster `user-service-cluster`.
+2025-11-24 15:35:47.993 +03:00 [DBG] Starting active health check probing on cluster `order-service-cluster`.
+2025-11-24 15:35:47.993 +03:00 [DBG] Starting active health check probing on cluster `product-service-cluster`.
+2025-11-24 15:35:47.994 +03:00 [DBG] Starting active health check probing on cluster `auth-service-cluster`.
+2025-11-24 15:35:47.994 +03:00 [DBG] Sending a health probe to endpoint `"http://localhost:5002/health"` of destination `primary` on cluster `order-service-cluster`.
+2025-11-24 15:35:47.994 +03:00 [DBG] Sending a health probe to endpoint `"http://localhost:5003/health"` of destination `primary` on cluster `product-service-cluster`.
+2025-11-24 15:35:47.994 +03:00 [DBG] Sending a health probe to endpoint `"http://localhost:5001/health"` of destination `primary` on cluster `user-service-cluster`.
+2025-11-24 15:35:47.994 +03:00 [DBG] Sending a health probe to endpoint `"http://localhost:5004/health"` of destination `primary` on cluster `auth-service-cluster`.
+2025-11-24 15:35:47.995 +03:00 [WRN] Probing destination `primary` on cluster `product-service-cluster` failed.
+System.Net.Http.HttpRequestException: Connection refused (localhost:5003)
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at Yarp.ReverseProxy.Health.ActiveHealthCheckMonitor.ProbeDestinationAsync(ClusterState cluster, DestinationState destination, TimeSpan timeout)
+2025-11-24 15:35:47.995 +03:00 [WRN] Probing destination `primary` on cluster `user-service-cluster` failed.
+System.Net.Http.HttpRequestException: Connection refused (localhost:5001)
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at Yarp.ReverseProxy.Health.ActiveHealthCheckMonitor.ProbeDestinationAsync(ClusterState cluster, DestinationState destination, TimeSpan timeout)
+2025-11-24 15:35:47.995 +03:00 [WRN] Probing destination `primary` on cluster `order-service-cluster` failed.
+System.Net.Http.HttpRequestException: Connection refused (localhost:5002)
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at Yarp.ReverseProxy.Health.ActiveHealthCheckMonitor.ProbeDestinationAsync(ClusterState cluster, DestinationState destination, TimeSpan timeout)
+2025-11-24 15:35:47.996 +03:00 [WRN] Probing destination `primary` on cluster `auth-service-cluster` failed.
+System.Net.Http.HttpRequestException: Connection refused (localhost:5004)
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at Yarp.ReverseProxy.Health.ActiveHealthCheckMonitor.ProbeDestinationAsync(ClusterState cluster, DestinationState destination, TimeSpan timeout)
+2025-11-24 15:35:47.996 +03:00 [DBG] Active health check probing on cluster `order-service-cluster` has stopped.
+2025-11-24 15:35:47.996 +03:00 [DBG] Active health check probing on cluster `product-service-cluster` has stopped.
+2025-11-24 15:35:47.997 +03:00 [DBG] Active health check probing on cluster `auth-service-cluster` has stopped.
+2025-11-24 15:35:47.996 +03:00 [DBG] Active health check probing on cluster `user-service-cluster` has stopped.
+2025-11-24 15:35:48.200 +03:00 [INF] Loading proxy data from config.
+2025-11-24 15:35:48.206 +03:00 [DBG] Existing client reused for cluster 'auth-service-cluster'.
+2025-11-24 15:35:48.207 +03:00 [DBG] Existing client reused for cluster 'order-service-cluster'.
+2025-11-24 15:35:48.207 +03:00 [DBG] Existing client reused for cluster 'product-service-cluster'.
+2025-11-24 15:35:48.207 +03:00 [DBG] Existing client reused for cluster 'user-service-cluster'.
+2025-11-24 15:35:48.460 +03:00 [INF] Loading proxy data from config.
+2025-11-24 15:35:48.461 +03:00 [DBG] Existing client reused for cluster 'auth-service-cluster'.
+2025-11-24 15:35:48.461 +03:00 [DBG] Existing client reused for cluster 'order-service-cluster'.
+2025-11-24 15:35:48.461 +03:00 [DBG] Existing client reused for cluster 'product-service-cluster'.
+2025-11-24 15:35:48.461 +03:00 [DBG] Existing client reused for cluster 'user-service-cluster'.

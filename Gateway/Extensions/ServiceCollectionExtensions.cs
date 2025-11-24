@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
     /// YARP Reverse Proxy'yi yapılandırır
     /// </summary>
     public static IServiceCollection AddReverseProxyWithResilience(
-        this IServiceCollection services, 
+        this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddReverseProxy()
@@ -49,7 +49,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var jwtConfig = configuration.GetSection("JwtConfig").Get<JwtConfig>() 
+        var jwtConfig = configuration.GetSection("JwtConfig").Get<JwtConfig>()
                         ?? throw new InvalidOperationException("JwtConfig not found in configuration");
 
         var key = Encoding.UTF8.GetBytes(jwtConfig.Secret);
@@ -102,7 +102,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var corsConfig = configuration.GetSection("CorsConfig").Get<CorsConfig>() 
+        var corsConfig = configuration.GetSection("CorsConfig").Get<CorsConfig>()
                          ?? new CorsConfig();
 
         if (corsConfig.EnableCors)
@@ -156,7 +156,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var rateLimitConfig = configuration.GetSection("RateLimitConfig").Get<RateLimitConfig>() 
+        var rateLimitConfig = configuration.GetSection("RateLimitConfig").Get<RateLimitConfig>()
                               ?? new RateLimitConfig();
 
         if (rateLimitConfig.EnableRateLimiting)

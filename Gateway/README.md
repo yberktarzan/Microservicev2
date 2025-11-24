@@ -64,6 +64,7 @@ Bu gateway, microservice mimarisinde **merkezi giriş noktası** rolünü üstle
 ### Installation
 
 1. **Restore packages:**
+
 ```bash
 cd Gateway
 dotnet restore
@@ -90,6 +91,7 @@ dotnet restore
 ```
 
 3. **Run the gateway:**
+
 ```bash
 dotnet run
 ```
@@ -120,6 +122,7 @@ Gateway çalıştıktan sonra Swagger UI'a erişebilirsiniz:
 ### JWT Authentication
 
 `appsettings.json`:
+
 ```json
 {
   "JwtConfig": {
@@ -177,12 +180,12 @@ Fixed window rate limiter (100 request per 60 seconds):
 
 Gateway, path-based routing kullanır:
 
-| Path | Downstream Service | Port | Auth Required |
-|------|-------------------|------|---------------|
-| `/api/users/**` | User Service | 5001 | ✅ Yes |
-| `/api/orders/**` | Order Service | 5002 | ✅ Yes |
-| `/api/products/**` | Product Service | 5003 | ❌ No |
-| `/api/auth/**` | Auth Service | 5004 | ❌ No |
+| Path               | Downstream Service | Port | Auth Required |
+| ------------------ | ------------------ | ---- | ------------- |
+| `/api/users/**`    | User Service       | 5001 | ✅ Yes        |
+| `/api/orders/**`   | Order Service      | 5002 | ✅ Yes        |
+| `/api/products/**` | Product Service    | 5003 | ❌ No         |
+| `/api/auth/**`     | Auth Service       | 5004 | ❌ No         |
 
 ### Example Requests
 
@@ -205,6 +208,7 @@ curl http://localhost:5000/api/products
 Gateway, 3 farklı health check endpoint sunar:
 
 ### `/health` - Full Health Check
+
 Tüm downstream servislerin sağlık durumunu kontrol eder.
 
 ```bash
@@ -212,6 +216,7 @@ curl http://localhost:5000/health
 ```
 
 Response:
+
 ```json
 {
   "status": "Healthy",
@@ -225,9 +230,11 @@ Response:
 ```
 
 ### `/health/ready` - Readiness Probe
+
 Kubernetes readiness probe için kullanılır.
 
 ### `/health/live` - Liveness Probe
+
 Kubernetes liveness probe için kullanılır.
 
 ## 📊 Metrics & Monitoring
@@ -241,6 +248,7 @@ curl http://localhost:5000/metrics
 ```
 
 Metrics include:
+
 - HTTP request duration
 - Request count by status code
 - Rate limit hits
@@ -267,21 +275,26 @@ Log dosyaları: `logs/gateway-{Date}.log`
 ## 🔐 Security Features
 
 ### 1. Security Headers
+
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
 - `X-XSS-Protection: 1; mode=block`
 - `Content-Security-Policy`
 
 ### 2. JWT Authentication
+
 Bearer token validation tüm protected route'larda.
 
 ### 3. Rate Limiting
+
 IP-based rate limiting (100 req/min default).
 
 ### 4. CORS
+
 Configurable CORS policy.
 
 ### 5. HTTPS Redirect
+
 Automatic HTTP to HTTPS redirection.
 
 ## 🐳 Docker
@@ -305,7 +318,7 @@ docker run -d \
 ### Docker Compose
 
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   gateway:
     image: gateway-api:latest
@@ -414,6 +427,7 @@ builder.Services.AddHealthChecks()
 ### Problem: "Connection refused" hatası
 
 **Çözüm:** Downstream service'lerin çalıştığından emin olun:
+
 ```bash
 curl http://localhost:5001/health
 ```
@@ -424,13 +438,15 @@ curl http://localhost:5001/health
 
 ### Problem: JWT validation error
 
-**Çözüm:** 
+**Çözüm:**
+
 - Token'ın geçerli olduğundan emin olun
 - `JwtConfig.Secret` değerinin downstream service ile aynı olduğunu kontrol edin
 
 ## 📊 Performance
 
 Recommended configuration:
+
 - **Max connections:** 1000
 - **Timeout:** 30s
 - **Rate limit:** 100 req/min per IP

@@ -66,8 +66,8 @@ try
     builder.Services.AddSwaggerGen(c =>
     {
         c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-        { 
-            Title = "Gateway API", 
+        {
+            Title = "Gateway API",
             Version = "v1",
             Description = "Reverse Proxy Gateway for Microservices Architecture"
         });

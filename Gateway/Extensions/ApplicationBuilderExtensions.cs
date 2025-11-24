@@ -74,7 +74,7 @@ public static class ApplicationBuilderExtensions
         this IApplicationBuilder app,
         IConfiguration configuration)
     {
-        var corsConfig = configuration.GetSection("CorsConfig").Get<CorsConfig>() 
+        var corsConfig = configuration.GetSection("CorsConfig").Get<CorsConfig>()
                          ?? new CorsConfig();
 
         if (corsConfig.EnableCors)
@@ -92,7 +92,7 @@ public static class ApplicationBuilderExtensions
         this IApplicationBuilder app,
         IConfiguration configuration)
     {
-        var rateLimitConfig = configuration.GetSection("RateLimitConfig").Get<RateLimitConfig>() 
+        var rateLimitConfig = configuration.GetSection("RateLimitConfig").Get<RateLimitConfig>()
                               ?? new RateLimitConfig();
 
         if (rateLimitConfig.EnableRateLimiting)
