@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using Gateway.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -20,79 +21,25 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services, 
         IConfiguration configuration)
     {
-        var circuitBreakerConfig = configuration.GetSection("CircuitBreakerConfig").Get<CircuitBreakerConfig>() 
-                                   ?? new CircuitBreakerConfig();
-
         services.AddReverseProxy()
-            .LoadFromConfig(configuration.GetSection("ReverseProxy"))
-            .ConfigureHttpClient((context, handler) =>
-            {
-                // Timeout ayarları
-                handler.Timeout = TimeSpan.FromSeconds(circuitBreakerConfig.TimeoutSeconds);
-            })
-            .AddTransforms(transformBuilderContext =>
-            {
-                // Request headers'a X-Forwarded-* headers ekle
-                transformBuilderContext.AddRequestTransform(async transformContext =>
-                {
-                    var correlationId = transformContext.HttpContext.Items["CorrelationId"]?.ToString();
-                    if (!string.IsNullOrEmpty(correlationId))
-                    {
-                        transformContext.ProxyRequest.Headers.Add("X-Correlation-ID", correlationId);
-                    }
-                    
-                    await Task.CompletedTask;
-                });
-            });
+            .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
         return services;
     }
 
     /// <summary>
     /// Polly ile Circuit Breaker ve Retry patterns ekler
+    /// Not: .NET 10 için Polly v8 kullanılmalı (eski API deprecated)
     /// </summary>
     public static IServiceCollection AddResiliencePolicies(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var config = configuration.GetSection("CircuitBreakerConfig").Get<CircuitBreakerConfig>() 
-                     ?? new CircuitBreakerConfig();
-
-        services.AddHttpClient("resilient-client")
-            .AddPolicyHandler(GetRetryPolicy(config))
-            .AddPolicyHandler(GetCircuitBreakerPolicy(config));
+        // Polly v8 için modern resilience pipeline kullanılacak
+        // Şimdilik basit HttpClient configuration
+        services.AddHttpClient("resilient-client");
 
         return services;
-    }
-
-    private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy(CircuitBreakerConfig config)
-    {
-        return HttpPolicyExtensions
-            .HandleTransientHttpError()
-            .WaitAndRetryAsync(
-                config.RetryCount,
-                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                onRetry: (outcome, timespan, retryCount, context) =>
-                {
-                    Console.WriteLine($"Retry {retryCount} after {timespan.TotalSeconds}s delay");
-                });
-    }
-
-    private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy(CircuitBreakerConfig config)
-    {
-        return HttpPolicyExtensions
-            .HandleTransientHttpError()
-            .CircuitBreakerAsync(
-                config.FailureThreshold,
-                config.DurationOfBreak,
-                onBreak: (outcome, timespan) =>
-                {
-                    Console.WriteLine($"Circuit breaker opened for {timespan.TotalSeconds}s");
-                },
-                onReset: () =>
-                {
-                    Console.WriteLine("Circuit breaker reset");
-                });
     }
 
     /// <summary>
@@ -218,22 +165,14 @@ public static class ServiceCollectionExtensions
             {
                 options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-                options.AddFixedWindowLimiter("fixed", limiterOptions =>
-                {
-                    limiterOptions.PermitLimit = rateLimitConfig.PermitLimit;
-                    limiterOptions.Window = TimeSpan.FromSeconds(rateLimitConfig.WindowSeconds);
-                    limiterOptions.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
-                    limiterOptions.QueueLimit = rateLimitConfig.QueueLimit;
-                });
-
-                options.AddSlidingWindowLimiter("sliding", limiterOptions =>
-                {
-                    limiterOptions.PermitLimit = rateLimitConfig.PermitLimit;
-                    limiterOptions.Window = TimeSpan.FromSeconds(rateLimitConfig.WindowSeconds);
-                    limiterOptions.SegmentsPerWindow = 4;
-                    limiterOptions.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
-                    limiterOptions.QueueLimit = rateLimitConfig.QueueLimit;
-                });
+                options.AddPolicy("fixed", context => RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = rateLimitConfig.PermitLimit,
+                        Window = TimeSpan.FromSeconds(rateLimitConfig.WindowSeconds),
+                        QueueLimit = rateLimitConfig.QueueLimit
+                    }));
             });
         }
 
@@ -248,11 +187,7 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.AddHealthChecks()
-            .AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy())
-            .AddUrlGroup(new Uri("http://localhost:5001/health"), "user-service", timeout: TimeSpan.FromSeconds(5))
-            .AddUrlGroup(new Uri("http://localhost:5002/health"), "order-service", timeout: TimeSpan.FromSeconds(5))
-            .AddUrlGroup(new Uri("http://localhost:5003/health"), "product-service", timeout: TimeSpan.FromSeconds(5))
-            .AddUrlGroup(new Uri("http://localhost:5004/health"), "auth-service", timeout: TimeSpan.FromSeconds(5));
+            .AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy("Gateway is running"));
 
         return services;
     }

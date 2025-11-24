@@ -63,13 +63,7 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     public static IApplicationBuilder UseGatewayMetrics(this IApplicationBuilder app)
     {
-        app.UseHttpMetrics();
-        
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapMetrics();
-        });
-
+        // Prometheus metrics will be configured in Program.cs
         return app;
     }
 

@@ -1,0 +1,31 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+
+# Visual Studio
+.vs/
+
+# JetBrains Rider
+.idea/
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+*.env
+.env.local
+.env.production
+
+# Temporary files
+*.tmp
+*.temp

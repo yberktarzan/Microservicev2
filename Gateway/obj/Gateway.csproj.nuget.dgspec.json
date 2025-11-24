@@ -46,21 +46,13 @@
           "dependencies": {
             "AspNetCore.HealthChecks.UI.Client": {
               "target": "Package",
-              "version": "[8.0.2, )"
+              "version": "[9.0.0, )"
             },
             "AspNetCoreRateLimit": {
               "target": "Package",
               "version": "[5.0.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
-              "target": "Package",
-              "version": "[10.0.0, )"
-            },
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[10.0.0, )"
-            },
-            "Microsoft.Extensions.Diagnostics.HealthChecks": {
               "target": "Package",
               "version": "[10.0.0, )"
             },
@@ -78,7 +70,7 @@
             },
             "Serilog.Enrichers.Environment": {
               "target": "Package",
-              "version": "[3.1.0, )"
+              "version": "[3.0.1, )"
             },
             "Serilog.Enrichers.Thread": {
               "target": "Package",
