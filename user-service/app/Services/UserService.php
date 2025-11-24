@@ -41,7 +41,7 @@ class UserService
     {
         $user = $this->repository->find($id, ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at']);
 
-        if (!$user) {
+        if (! $user) {
             throw new NotFoundException($id);
         }
 
@@ -62,10 +62,10 @@ class UserService
 
         $user = $this->repository->createUser($data);
 
-        if (!$user) {
+        if (! $user) {
             DB::rollback();
             Log::error('Failed to create user', ['data' => $data]);
-            throw new CreateFailedException();
+            throw new CreateFailedException;
         }
 
         DB::commit();
@@ -92,7 +92,7 @@ class UserService
 
         $updated = $this->repository->updateUser($id, $data);
 
-        if (!$updated) {
+        if (! $updated) {
             DB::rollback();
             Log::error('Failed to update user', ['user_id' => $id, 'data' => $data]);
             throw new UpdateFailedException($id);
@@ -115,7 +115,7 @@ class UserService
 
         $deleted = $this->repository->delete($id);
 
-        if (!$deleted) {
+        if (! $deleted) {
             DB::rollback();
             Log::error('Failed to delete user', ['user_id' => $id]);
             throw new DeleteFailedException($id);
