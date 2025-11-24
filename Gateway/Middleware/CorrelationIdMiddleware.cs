@@ -17,7 +17,7 @@ public class CorrelationIdMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         // Request'ten correlation ID al veya yeni oluştur
-        var correlationId = context.Request.Headers[CorrelationIdHeader].FirstOrDefault() 
+        var correlationId = context.Request.Headers[CorrelationIdHeader].FirstOrDefault()
                            ?? Guid.NewGuid().ToString();
 
         // Context'e ekle (downstream'de kullanılabilir)
